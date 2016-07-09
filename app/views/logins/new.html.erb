@@ -1,0 +1,15 @@
+<% if current_user.anonymous? %>
+  <%= form_tag login_path do %>
+    <%= label_tag 'Přihlášení', nil, for: 'email' %>
+    <div class="input-group">
+      <%= text_field_tag 'email', nil, placeholder: 'E-mail', required: true %>
+
+      <span>
+        <%= button_tag 'Přihlásit' %>
+      </span>
+    </div>
+  <% end %>
+<% else %>
+  You are logged in as <%= current_user.name %>
+  <%= button_to 'Odhlasit', sessions_destroy_path, method: :delete %> 
+<% end %>
