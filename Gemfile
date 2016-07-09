@@ -28,3 +28,16 @@ group :development do
   gem 'web-console'
   gem 'listen'
 end
+
+group :test, :development do
+  gem 'pry'
+  gem 'pry-rails'
+  gem 'pry-byebug'
+
+  gem 'rspec-rails'
+  gem 'capybara'
+  gem 'rack-mini-profiler'
+  gem 'flamegraph'
+  gem 'stackprof' # ruby 2.1+ only
+  gem 'memory_profiler'
+end
