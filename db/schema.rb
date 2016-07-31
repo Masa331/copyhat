@@ -10,10 +10,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160709115210) do
+ActiveRecord::Schema.define(version: 20160716183128) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "data_entries", force: :cascade do |t|
+    t.integer  "form_id"
+    t.jsonb    "inputs"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["form_id"], name: "index_data_entries_on_form_id", using: :btree
+  end
+
+  create_table "form_inputs", force: :cascade do |t|
+    t.string   "title"
+    t.string   "input_type"
+    t.integer  "form_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["form_id"], name: "index_form_inputs_on_form_id", using: :btree
+  end
+
+  create_table "forms", force: :cascade do |t|
+    t.string   "name"
+    t.boolean  "visible"
+    t.string   "public_id"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_forms_on_user_id", using: :btree
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "email"
@@ -24,4 +51,7 @@ ActiveRecord::Schema.define(version: 20160709115210) do
     t.datetime "updated_at",              null: false
   end
 
+  add_foreign_key "data_entries", "forms"
+  add_foreign_key "form_inputs", "forms"
+  add_foreign_key "forms", "users"
 end

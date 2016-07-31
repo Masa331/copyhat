@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   delete 'sessions/destroy'
 
   resources :users
+  resources :forms
 
   root 'static_pages#homepage'
 end
