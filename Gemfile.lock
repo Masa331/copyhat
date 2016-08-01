@@ -1,3 +1,9 @@
+PATH
+  remote: /home/masa331/pracovni/apps/elm_sprockets
+  specs:
+    elm_sprockets (0.0.3)
+      rails (~> 5.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -234,6 +240,7 @@ DEPENDENCIES
   capistrano3-puma
   capybara
   coffee-rails (~> 4.2)
+  elm_sprockets!
   execjs
   flamegraph
   jbuilder (~> 2.5)

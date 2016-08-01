@@ -81,5 +81,27 @@
 #   end
 # end
 #
-# Rails.application.assets.register_engine('.elm', ElmCompiler)
-# Rails.application.assets.register_mime_type('text/x-elm', '.elm')
+
+class MySprocketsExtension
+  def self.call(input)
+    { data: input[:data] + "/* Honvo */" }
+  end
+end
+
+require 'sprockets/processing'
+extend Sprockets::Processing
+
+
+Rails.application.config.assets.configure do |env|
+  env.register_mime_type 'text/x-elm', extensions: ['.elm']
+  # env.register_preprocessor 'text/x-elm', MySprocketsExtension
+  env.register_transformer 'text/x-elm', 'application/javascript', MySprocketsExtension
+
+
+
+  # env.register_mime_type 'text/x-elm', extensions: ['.elm']
+  # env.register_preprocessor '.elm', ElmSprockets::Processor
+#   # Rails.application.config.assets.register_engine('.elm', ElmCompiler)
+#   # Rails.application.config.assets.register_mime_type('text/x-elm', '.elm')
+end
+
