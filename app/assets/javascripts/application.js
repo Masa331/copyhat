@@ -12,5 +12,5 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require elm_bundle
+//= require Main
 //= require app

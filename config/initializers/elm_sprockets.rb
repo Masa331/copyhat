@@ -92,13 +92,13 @@ class MySprocketsExtension
     compile_dir = pathname.dirname
     current_dir = Dir.getwd
 
-    cmd = "elm make #{pathname.basename.to_s} --output elm_bundle.js"
+    cmd = "elm make #{pathname.basename.to_s} --output Main.js"
 
     Dir.chdir compile_dir do
       `#{cmd}`
     end
 
-    data = File.read compile_dir + "elm_bundle.js"
+    data = File.read compile_dir + "Main.js"
 
     { data: data }
   end
@@ -120,4 +120,35 @@ Rails.application.config.assets.configure do |env|
 #   # Rails.application.config.assets.register_engine('.elm', ElmCompiler)
 #   # Rails.application.config.assets.register_mime_type('text/x-elm', '.elm')
 end
+
+# require 'open3'
+# require 'pathname'
+#
+# class MySprocketsExtension
+#   def self.call(input)
+#     filename = input[:filename]
+#     pathname = Pathname.new filename
+#
+#     require 'pry'; binding.pry
+#
+#     { data: input[:data] + "/* hovno */" }
+#   end
+# end
+#
+# require 'sprockets/processing'
+# extend Sprockets::Processing
+#
+#
+# Rails.application.config.assets.configure do |env|
+#   env.register_mime_type 'text/x-elm', extensions: ['.elm']
+#   # env.register_preprocessor 'text/x-elm', MySprocketsExtension
+#   env.register_transformer 'text/x-elm', 'application/javascript', MySprocketsExtension
+#
+#
+#
+#   # env.register_mime_type 'text/x-elm', extensions: ['.elm']
+#   # env.register_preprocessor '.elm', ElmSprockets::Processor
+# #   # Rails.application.config.assets.register_engine('.elm', ElmCompiler)
+# #   # Rails.application.config.assets.register_mime_type('text/x-elm', '.elm')
+# end
 
