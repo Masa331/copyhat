@@ -82,8 +82,16 @@
 # end
 #
 
+require 'open3'
+require 'pathname'
+
 class MySprocketsExtension
   def self.call(input)
+    filename = input[:filename]
+    pathname = Pathname.new filename
+
+    require 'pry'; binding.pry
+
     { data: input[:data] + "/* Honvo */" }
   end
 end
