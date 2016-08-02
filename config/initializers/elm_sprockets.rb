@@ -89,10 +89,18 @@ class MySprocketsExtension
   def self.call(input)
     filename = input[:filename]
     pathname = Pathname.new filename
+    compile_dir = pathname.dirname
+    current_dir = Dir.getwd
 
-    require 'pry'; binding.pry
+    cmd = "elm make #{pathname.basename.to_s} --output elm_bundle.js"
 
-    { data: input[:data] + "/* Honvo */" }
+    Dir.chdir compile_dir do
+      `#{cmd}`
+    end
+
+    data = File.read compile_dir + "elm_bundle.js"
+
+    { data: data }
   end
 end
 
