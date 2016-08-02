@@ -6,6 +6,7 @@ class FormsController < ApplicationController
   end
 
   def index
+    @forms = current_user.forms
   end
 
   def create

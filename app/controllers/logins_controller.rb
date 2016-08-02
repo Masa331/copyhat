@@ -1,4 +1,6 @@
 class LoginsController < ApplicationController
+  skip_before_action :redirect_anonymous_users
+
   def new
   end
 

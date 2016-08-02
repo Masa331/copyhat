@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   helper_method :current_user
+  before_action :redirect_anonymous_users
 
   def current_user=(user)
     session[:user_id] = user.id
@@ -8,5 +9,13 @@ class ApplicationController < ActionController::Base
 
   def current_user
     User.find_by(id: session[:user_id]) || NullUser.new
+  end
+
+  private
+
+  def redirect_anonymous_users
+    if current_user.anonymous?
+      redirect_to new_login_path
+    end
   end
 end
