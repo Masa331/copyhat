@@ -22,8 +22,8 @@ init =
   ({ name = "Prvni Formular",
      id = 1,
      inputs = [Input "Email" Email "" 1,
-               Input "Name" Text "" 2,
-               Input "Submit" Submit "" 3] },
+               Input "Name a;" Text "" 2,
+               Input "Submit hovno" Submit "" 3] },
    Cmd.none)
 
 view : Form -> Html Msg
@@ -55,7 +55,7 @@ inputIdentifier input =
 
 submitInputView : Input -> Html msg
 submitInputView submitInput =
-  button [onClick FormSubmit, type' "submit", class "btn btn-primary"] [text submitInput.title]
+  button [type' "submit", class "btn btn-primary"] [text submitInput.title]
 
 update : Msg -> Form -> (Form, Cmd Msg)
 update msg form =
