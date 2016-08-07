@@ -1,2 +1,29 @@
-<h1>Forms#new</h1>
-<p>Find me in app/views/forms/new.html.erb</p>
+<h1>Novy formular</h1>
+
+<div class="row">
+  <div class="col-sm-6">
+    <h2>Komponenty</h2>
+
+    <form>
+      <div class="form-group">
+        <label for="emailInput">Email</label>
+        <input type="email" class="form-control" id="emailInput" name="emailInput">
+      </div>
+
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" name="newsletterYes" id="newsletterYes"> Newsletter
+        </label>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Poslat</button>
+    </form>
+  </div>
+
+  <div class="col-sm-6">
+    <h2>Vas formular</h2>
+
+      <div id="elm-form-creator-container">
+      </div>
+  </div>
+</div>

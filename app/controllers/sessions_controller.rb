@@ -1,4 +1,6 @@
 class SessionsController < ApplicationController
+  skip_before_action :redirect_anonymous_users
+
   def create
     user = User.where(login_token: params[:token])
       .where('login_token_valid_until > ?', Time.now).first

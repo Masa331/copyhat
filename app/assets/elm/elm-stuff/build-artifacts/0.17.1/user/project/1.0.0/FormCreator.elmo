@@ -1,0 +1,166 @@
+var _user$project$FormCreator$formSubmit = function (form) {
+	return {ctor: '_Tuple2', _0: form, _1: _elm_lang$core$Platform_Cmd$none};
+};
+var _user$project$FormCreator$submitInputView = function (submitInput) {
+	return A2(
+		_elm_lang$html$Html$button,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$type$('submit'),
+				_elm_lang$html$Html_Attributes$class('btn btn-primary')
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html$text(submitInput.title)
+			]));
+};
+var _user$project$FormCreator$inputIdentifier = function (input) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		_elm_lang$core$String$toLower(
+			_elm_lang$core$Basics$toString(input.type$)),
+		_elm_lang$core$Basics$toString(input.id));
+};
+var _user$project$FormCreator$Input = F4(
+	function (a, b, c, d) {
+		return {title: a, type$: b, value: c, id: d};
+	});
+var _user$project$FormCreator$inputUpdate = F3(
+	function (id, value, input) {
+		return A4(
+			_user$project$FormCreator$Input,
+			input.title,
+			input.type$,
+			_elm_lang$core$Native_Utils.eq(input.id, id) ? value : input.value,
+			input.id);
+	});
+var _user$project$FormCreator$update = F2(
+	function (msg, form) {
+		var _p0 = msg;
+		if (_p0.ctor === 'FormSubmit') {
+			return _user$project$FormCreator$formSubmit(form);
+		} else {
+			return {
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Native_Utils.update(
+					form,
+					{
+						inputs: A2(
+							_elm_lang$core$List$map,
+							A2(_user$project$FormCreator$inputUpdate, _p0._0, _p0._1),
+							form.inputs)
+					}),
+				_1: _elm_lang$core$Platform_Cmd$none
+			};
+		}
+	});
+var _user$project$FormCreator$Form = F3(
+	function (a, b, c) {
+		return {name: a, inputs: b, id: c};
+	});
+var _user$project$FormCreator$Submit = {ctor: 'Submit'};
+var _user$project$FormCreator$Text = {ctor: 'Text'};
+var _user$project$FormCreator$Email = {ctor: 'Email'};
+var _user$project$FormCreator$init = {
+	ctor: '_Tuple2',
+	_0: {
+		name: 'Prvni Formular',
+		id: 1,
+		inputs: _elm_lang$core$Native_List.fromArray(
+			[
+				A4(_user$project$FormCreator$Input, 'Email', _user$project$FormCreator$Email, '', 1),
+				A4(_user$project$FormCreator$Input, 'Name', _user$project$FormCreator$Text, '', 2),
+				A4(_user$project$FormCreator$Input, 'Submit', _user$project$FormCreator$Submit, '', 3)
+			])
+	},
+	_1: _elm_lang$core$Platform_Cmd$none
+};
+var _user$project$FormCreator$InputUpdate = F2(
+	function (a, b) {
+		return {ctor: 'InputUpdate', _0: a, _1: b};
+	});
+var _user$project$FormCreator$baseInputView = function (input) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$class('form-group')
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$label,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$for(
+						_user$project$FormCreator$inputIdentifier(input))
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text(input.title)
+					])),
+				A2(
+				_elm_lang$html$Html$input,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$type$(
+						_elm_lang$core$Basics$toString(input.type$)),
+						_elm_lang$html$Html_Attributes$class('form-control'),
+						_elm_lang$html$Html_Attributes$id(
+						_user$project$FormCreator$inputIdentifier(input)),
+						_elm_lang$html$Html_Events$onInput(
+						_user$project$FormCreator$InputUpdate(input.id))
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[]))
+			]));
+};
+var _user$project$FormCreator$inputView = function (myInput) {
+	var _p1 = myInput.type$;
+	switch (_p1.ctor) {
+		case 'Email':
+			return _user$project$FormCreator$baseInputView(myInput);
+		case 'Text':
+			return _user$project$FormCreator$baseInputView(myInput);
+		default:
+			return _user$project$FormCreator$submitInputView(myInput);
+	}
+};
+var _user$project$FormCreator$FormSubmit = {ctor: 'FormSubmit'};
+var _user$project$FormCreator$view = function (myForm) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$h2,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text(myForm.name)
+					])),
+				A2(
+				_elm_lang$html$Html$form,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Events$onSubmit(_user$project$FormCreator$FormSubmit)
+					]),
+				A2(_elm_lang$core$List$map, _user$project$FormCreator$inputView, myForm.inputs)),
+				_elm_lang$html$Html$text(
+				_elm_lang$core$Basics$toString(myForm))
+			]));
+};
+var _user$project$FormCreator$main = {
+	main: _elm_lang$html$Html_App$program(
+		{
+			init: _user$project$FormCreator$init,
+			view: _user$project$FormCreator$view,
+			update: _user$project$FormCreator$update,
+			subscriptions: function (model) {
+				return _elm_lang$core$Platform_Sub$none;
+			}
+		})
+};

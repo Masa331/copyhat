@@ -1,4 +1,7 @@
 <h1>Formulare</h1>
+<%= link_to "Novy formular", new_form_path %>
+
+<h2>Vytvorene formulare</h2>
 <ul>
   <% @forms.each do |form| %>
     <li><%= link_to form.title form_path(form) %></li>
