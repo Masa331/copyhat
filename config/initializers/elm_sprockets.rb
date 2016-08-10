@@ -1,24 +1,24 @@
 require 'pathname'
+require 'open3'
 
-# below is a pretty shitty code... :( :D wants refactoring!!
+class ElmSprockets
+  class CompileError < StandardError; end
 
-class MySprocketsExtension
   def self.call(input)
-    filename = input[:filename]
-    pathname = Pathname.new filename
-    compile_dir = pathname.dirname
-    current_dir = Dir.getwd
+    input_file = Pathname.new input[:filename]
+    output_file = Rails.root.join("tmp", "cache", "assets", "elm", "#{input[:name]}.js")
 
-    cmd = "elm make #{pathname.basename.to_s} --output Main.js"
+    cmd = "elm make #{input_file} --output #{output_file}"
 
-    Dir.chdir compile_dir do
-      `#{cmd}`
+    Open3.popen3(cmd, chdir: Rails.root) do |_in, out, err, t|
+      compiler_out = out.read
+      compiler_err = err.read
+      if t.value != 0
+        raise CompileError, compiler_err
+      end
     end
 
-    data = File.read compile_dir + "Main.js"
-    File.delete compile_dir + "Main.js"
-
-    { data: data }
+    { data: File.read(output_file) }
   end
 end
 
@@ -28,5 +28,5 @@ extend Sprockets::Processing
 
 Rails.application.config.assets.configure do |env|
   env.register_mime_type 'text/x-elm', extensions: ['.elm']
-  env.register_transformer 'text/x-elm', 'application/javascript', MySprocketsExtension
+  env.register_transformer 'text/x-elm', 'application/javascript', ElmSprockets
 end

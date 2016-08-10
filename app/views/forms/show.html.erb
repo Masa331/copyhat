@@ -1,2 +1,41 @@
-<h1>Forms#show</h1>
-<p>Find me in app/views/forms/show.html.erb</p>
+<h1><%= @form.name %></h1>
+<p>Tady bude asi nejaky popis formulare</p>
+
+<div class="row">
+  <div class="col-sm-6">
+    <%= form_tag data_entries_path do %>
+      <% @form.form_inputs.each do |input| %>
+        <%= label_tag input.title %>
+        <%= send("#{input.input_type}_field_tag", "data_entry[#{input.title}]") %>
+      <% end %>
+
+      <%= hidden_field_tag 'data_entry[form_id]', @form.id %>
+      <%= submit_tag %>
+    <% end %>
+  </div>
+
+  <div class="col-sm-6">
+    <table class="form-table">
+      <thead>
+        <tr>
+          <% @form.form_inputs.each do |input| %>
+            <th>
+              <%= input.title %>
+            </th>
+          <% end %>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @form.data_entries.each do |entry| %>
+          <tr>
+            <% entry.inputs.each do |input| %>
+              <td><%= input[1] %></td>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+

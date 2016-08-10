@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   resources :users
   resources :forms
+  resources :data_entries
 
   root 'static_pages#homepage'
 end

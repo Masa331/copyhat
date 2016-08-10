@@ -4,6 +4,6 @@
 <h2>Vytvorene formulare</h2>
 <ul>
   <% @forms.each do |form| %>
-    <li><%= link_to form.title form_path(form) %></li>
+    <li><%= link_to form.name, form_path(form) %></li>
   <% end %>
 </ul>

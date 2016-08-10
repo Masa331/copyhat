@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'User in collected data' do
   it 'browses collected data' do
-    user = User.new(email: 'neco@test.cz')
+    user = User.create(email: 'neco@test.cz')
     login(user)
 
     form = Form.create!(name: 'newsletter sign-up', user: user)
@@ -14,6 +14,10 @@ RSpec.describe 'User in collected data' do
                      inputs: { email_field.id => 'pdonat@seznam.cz', name_field.id => 'Premysl Donat'})
     DataEntry.create(form: form,
                      inputs: { email_field.id => 'nekdo@gmail.com', name_field.id => 'Petr Novak'})
+
+    visit root_path
+    click_on "Formuláře"
+    click_on 'newsletter sign-up'
 
     within '.form-table' do
       expect(page).to have_content "Jméno Email"
