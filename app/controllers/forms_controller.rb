@@ -1,9 +1,18 @@
+require 'csv_builder'
+
 class FormsController < ApplicationController
   def new
   end
 
   def show
     @form = current_user.forms.find params[:id]
+
+    respond_to do |format|
+      format.html
+      format.csv do
+        send_data CsvBuilder.call(@form.data_entries), filename: "data-export.csv", type: 'text/csv'
+      end
+    end
   end
 
   def index

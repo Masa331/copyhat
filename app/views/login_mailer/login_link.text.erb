@@ -1,5 +1,6 @@
-Hi from someapp.com
+Ahoj,
 
-Click on following link to sing-into someapp.com
+Pro příhlášení do copyhat.cz zkopírujte následující odkaz do prohlížeče:
+<%= sessions_create_url(host: 'localhost:3000', token: @user.login_token) %>
 
-<%= link_to 'sign-in', sessions_create_url(host: 'localhost:3000', token: @user.login_token) %>
+Hezký den :)

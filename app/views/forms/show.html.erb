@@ -1,17 +1,10 @@
 <h1><%= @form.name %></h1>
 <p>Tady bude asi nejaky popis formulare</p>
+<%= link_to 'Stáhnout v csv', form_path(@form, format: :csv), format: :csv %>
 
 <div class="row">
   <div class="col-sm-6">
-    <%= form_tag data_entries_path do %>
-      <% @form.form_inputs.each do |input| %>
-        <%= label_tag input.title %>
-        <%= send("#{input.input_type}_field_tag", "data_entry[#{input.title}]") %>
-      <% end %>
-
-      <%= hidden_field_tag 'data_entry[form_id]', @form.id %>
-      <%= submit_tag %>
-    <% end %>
+    <%= create_form(@form) %>
   </div>
 
   <div class="col-sm-6">
