@@ -1,17 +1,11 @@
 $(document).ready(function() {
-  mainContainer = document.getElementById("elm-main-container")
-  if (mainContainer) {
-    Elm.Main.embed(document.getElementById("elm-main-container"));
-  }
-
   formCreatorContainer = document.getElementById("elm-form-creator-container")
   if (formCreatorContainer) {
-    Elm.FormCreator.embed(formCreatorContainer);
-  }
+    app = Elm.FormCreator.embed(formCreatorContainer);
 
-  formTestContainer = document.getElementById("elm-form-test-container")
-  if (formTestContainer) {
-    Elm.FormTest.embed(formTestContainer);
+    app.ports.redirect.subscribe(function(url) {
+      window.location.replace(url)
+    });
   }
 });
 
@@ -22,10 +16,8 @@ $(document).ready(function() {
 
 
 // xhr.onreadystatechange = function () {
-//   var DONE = 4;
-//   var OK = 200;
-//   if (xhr.readyState === DONE) {
-//     if (xhr.status === OK) {
+//   if (xhr.readyState === 4) {
+//     if (xhr.status === 200) {
 //       console.log(xhr.responseText);
 //     } else {
 //       console.log('Error: ' + xhr.status);

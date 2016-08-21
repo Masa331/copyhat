@@ -1,9 +1,35 @@
-<h1>Formulare</h1>
-<%= link_to "Novy formular", new_form_path %>
+<div class="row">
+  <div class="col-sm-12">
+    <p>
+      <%= link_to new_form_path do %>
+        <span class='text-success'>+ Vytvořit formulář</span>
+      <% end %>
+    </p>
 
-<h2>Vytvorene formulare</h2>
-<ul>
-  <% @forms.each do |form| %>
-    <li><%= link_to form.name, form_path(form) %></li>
-  <% end %>
-</ul>
+    <table class='table table-bordered table-hover'>
+      <thead>
+        <tr>
+          <th>Název</th>
+          <th>Počet vyplnění</th>
+          <th>Přímý odkaz</th>
+          <th>Akce</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @forms.each do |form| %>
+          <tr>
+            <td><%= link_to form.name, form_path(form) %></td>
+            <td>5</td>
+            <td><%= link_to form.link %></td>
+            <td>
+              <%= link_to 'Upravit', edit_form_path(form) %>
+              |
+              <%= link_to 'Stáhnout data', edit_form_path(form) %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

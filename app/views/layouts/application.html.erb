@@ -12,18 +12,24 @@
     <div class="container">
       <nav class='navbar'>
         <%= link_to root_path, class: 'navbar-brand' do %>
-          <h2>CopyHat</h2>
+          <%= image_tag 'logo_wide.png' %>
         <% end %>
 
-        <ul class='nav navbar-nav pull-xs-right'>
-          <li class='nav-item'>
-            <% if current_user.anonymous? %>
-              <%= link_to 'Přihlásit', new_login_path %>
-            <% else %>
-              <%= button_to 'Odhlásit', sessions_destroy_path, method: :delete %>
-            <% end %>
-          </li>
-        </ul>
+        <% unless current_user.anonymous? %>
+          <ul class='nav navbar-nav pull-xs-right'>
+            <li class='nav-item'>
+              <% if current_page?(forms_path) || current_page?('/') %>
+                <u><%= link_to 'Formuláře', forms_path %></u>
+              <% else %>
+                <%= link_to 'Formuláře', forms_path %>
+              <% end %>
+            </li>
+
+            <li class='nav-item'>
+              <%= link_to 'Odhlásit', sessions_destroy_path, method: :delete %>
+            </li>
+          </ul>
+        <% end %>
       </nav>
 
       <hr class='header-divider'>
@@ -39,9 +45,6 @@
           </div>
         </div>
       <% end %>
-
-      <div id="elm-main-container">
-      </div>
 
       <%= yield %>
 

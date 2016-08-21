@@ -1,15 +1,18 @@
-<% if current_user.anonymous? %>
-  <%= form_tag login_path do %>
-    <%= label_tag 'Přihlášení', nil, for: 'email' %>
-    <div class="input-group">
-      <%= text_field_tag 'email', nil, placeholder: 'E-mail', required: true %>
+<div class="row">
+  <div class="col-sm-6 offset-sm-3">
 
-      <span>
-        <%= button_tag 'Přihlásit' %>
-      </span>
+    <div class="card card-block">
+      <h4 class="card-title">Přihlášení</h4>
+      <p class='card-text'>Pro registraci a přihlášení na CopyHat stačí zadat e-mail. Na něj vám obratem přijde přihlašovací odkaz.</p>
+
+      <%= form_tag login_path do %>
+        <fieldset class="form-group">
+          <%= label_tag 'email', 'E-mail' %>
+          <%= email_field_tag 'email', nil, class: 'form-control', placeholder: 'jan@novak.cz' %>
+        </fieldset>
+
+          <%= button_tag 'Přihlásit', class: 'btn btn-primary btn-block' %>
+      <% end %>
     </div>
-  <% end %>
-<% else %>
-  You are logged in as <%= current_user.name %>
-  <%= button_to 'Odhlasit', sessions_destroy_path, method: :delete %> 
-<% end %>
+  </div>
+</div>

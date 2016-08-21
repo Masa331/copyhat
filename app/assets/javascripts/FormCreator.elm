@@ -1,25 +1,19 @@
-module FormCreator exposing (..)
+port module FormCreator exposing (..)
 
-import Html exposing (..)
 import Html.App exposing (..)
-import Html.Attributes exposing (..)
-import Html.Events exposing (..)
 import String
 import Task exposing (..)
 import Http exposing (..)
 import Rails exposing (..)
 import Json.Decode exposing (..)
 import Json.Encode exposing (..)
-import Array exposing (..)
-import List exposing (..)
+import Messages exposing (..)
+import Models exposing (..)
+import Views exposing (..)
 
-type InputType = Email | Text | Submit
-type alias Input = { title: String, type': InputType, value: String, id: Int }
-type alias Form = { name: String, inputs: List Input, id: Int, errors: String, response: String }
+port redirect : String -> Cmd msg
 
-
-type Msg = FormSubmit | InputUpdate Int String | FormSaved String | FormFailed (Rails.Error String)
-
+-- Model --
 
 init : (Form, Cmd Msg)
 init =
@@ -28,40 +22,14 @@ init =
      errors = "",
      response = "",
      inputs = [Input "Email" Email "" 1,
-               Input "Name;" Text "" 2,
+               Input "Name;" Models.Text "" 2,
                Input "submit" Submit "" 3] },
    Cmd.none)
 
-view : Form -> Html Msg
-view myForm =
-  div [] [h2 [] [text myForm.name],
-          Html.form [onSubmit FormSubmit] (List.map inputView myForm.inputs),
-          text (toString myForm)]
-
-inputView : Input -> Html Msg
-inputView myInput =
-  case myInput.type' of
-    Email -> baseInputView myInput
-    Text -> baseInputView myInput
-    Submit -> submitInputView myInput
-
-baseInputView : Input -> Html Msg
-baseInputView input =
-  div [class "form-group"]
-      [label [for (inputIdentifier input)] [text input.title],
-       Html.input [type' (toString input.type'),
-                   class "form-control",
-                   id (inputIdentifier input),
-                   onInput (InputUpdate input.id)]
-                  []]
-
-inputIdentifier input =
-  (String.toLower (toString input.type')) ++ (toString input.id)
+-- Views --
 
 
-submitInputView : Input -> Html msg
-submitInputView submitInput =
-  button [type' "submit", class "btn btn-primary"] [text submitInput.title]
+-- Updates --
 
 update : Msg -> Form -> (Form, Cmd Msg)
 update msg form =
@@ -69,18 +37,25 @@ update msg form =
     FormSubmit -> formSubmit form
     InputUpdate id value ->
       ({ form | inputs = List.map (inputUpdate id value) form.inputs}, Cmd.none)
-    FormSaved _ -> (form, Cmd.none)
+    FormSaved url -> formSaved form url
     FormFailed error -> ({ form | errors = toString error }, Cmd.none)
+
+formSaved : Form -> String -> (Form, Cmd Msg)
+formSaved form url =
+  ({ form | errors = "", response = url}, redirect url)
 
 inputUpdate : Int -> String -> Input -> Input
 inputUpdate id value input =
   Input input.title input.type' (if input.id == id then value else input.value) input.id
 
 formSubmit form =
-  (form, Task.perform FormFailed FormSaved (Rails.post (Rails.always decodeResponse) "/forms" (encodeFormInJson form)))
+  (form, Task.perform FormFailed FormSaved (Rails.post ({ success = successDecoder, failure = failureDecoder}) "/forms" (encodeFormInJson form)))
 
-decodeResponse =
-  Json.Decode.string
+successDecoder =
+  ("redirect" := Json.Decode.string)
+
+failureDecoder =
+  ("failure" := Json.Decode.string)
 
 encodeFormInJson : Form -> Body
 encodeFormInJson form =

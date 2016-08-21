@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  protect_from_forgery with: :exception
+  # protect_from_forgery with: :exception
   helper_method :current_user
   before_action :redirect_anonymous_users
 
@@ -14,8 +14,8 @@ class ApplicationController < ActionController::Base
   private
 
   def redirect_anonymous_users
-    if current_user.anonymous?
-      redirect_to new_login_path
+    if current_user.anonymous? && request.path != homepage_path
+      redirect_to homepage_path
     end
   end
 end

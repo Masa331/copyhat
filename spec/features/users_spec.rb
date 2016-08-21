@@ -4,8 +4,6 @@ RSpec.describe 'User in application' do
   it 'logs in with email' do
     visit root_path
 
-    click_on 'Přihlásit'
-
     fill_in 'Přihlášení', with: 'test@email.cz'
     within 'form' do
       click_on 'Přihlásit'
@@ -15,7 +13,7 @@ RSpec.describe 'User in application' do
 
     mail = ActionMailer::Base.deliveries.last
     text_part = mail.body.parts.first.to_s
-    token = /token=(.*)"/.match(text_part)[1]
+    token = /token=3D(.*)\r/.match(text_part)[1]
 
     visit sessions_create_path token: token
 

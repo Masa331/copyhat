@@ -21,19 +21,28 @@ class FormsController < ApplicationController
 
   def create
     form = Form.new(name: permitted_params[:name], user: current_user)
+    form.save
+    permitted_params.fetch(:inputs, []).each do |input|
+      input = FormInput.new(title: input[:title], input_type: input[:type])
+      form.inputs << input
+    end
 
-    if form.save
-      permitted_params.fetch(:inputs, []).each do |input|
-        FormInput.create(form: form, title: input[:title], input_type: input[:type])
+    respond_to do |format|
+      format.js do
+        if form.persisted? && form.inputs.all?(&:persisted?)
+          render json: { redirect: forms_url }.to_json
+        else
+          render json: { failure: "General error occured" }.to_json
+        end
       end
-
-      redirect_to forms_path
-    else
-      render :new
     end
   end
 
   def destroy
+    @form = current_user.forms.find params[:id]
+    @form.destroy
+
+    redirect_to forms_path, notice: 'Formulář byl smazán'
   end
 
   def edit

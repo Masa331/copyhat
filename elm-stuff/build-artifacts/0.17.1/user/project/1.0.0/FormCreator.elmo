@@ -35,47 +35,32 @@ var _user$project$FormCreator$encodeFormInJson = function (form) {
 						{ctor: '_Tuple2', _0: 'inputs', _1: inputs}
 					]))));
 };
-var _user$project$FormCreator$decodeResponse = _elm_lang$core$Json_Decode$string;
-var _user$project$FormCreator$submitInputView = function (submitInput) {
-	return A2(
-		_elm_lang$html$Html$button,
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_lang$html$Html_Attributes$type$('submit'),
-				_elm_lang$html$Html_Attributes$class('btn btn-primary')
-			]),
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_lang$html$Html$text(submitInput.title)
-			]));
+var _user$project$FormCreator$failureDecoder = A2(_elm_lang$core$Json_Decode_ops[':='], 'failure', _elm_lang$core$Json_Decode$string);
+var _user$project$FormCreator$successDecoder = A2(_elm_lang$core$Json_Decode_ops[':='], 'redirect', _elm_lang$core$Json_Decode$string);
+var _user$project$FormCreator$formSubmit = function (form) {
+	return {
+		ctor: '_Tuple2',
+		_0: form,
+		_1: A3(
+			_elm_lang$core$Task$perform,
+			_user$project$Messages$FormFailed,
+			_user$project$Messages$FormSaved,
+			A3(
+				_NoRedInk$elm_rails$Rails$post,
+				{success: _user$project$FormCreator$successDecoder, failure: _user$project$FormCreator$failureDecoder},
+				'/forms',
+				_user$project$FormCreator$encodeFormInJson(form)))
+	};
 };
-var _user$project$FormCreator$inputIdentifier = function (input) {
-	return A2(
-		_elm_lang$core$Basics_ops['++'],
-		_elm_lang$core$String$toLower(
-			_elm_lang$core$Basics$toString(input.type$)),
-		_elm_lang$core$Basics$toString(input.id));
-};
-var _user$project$FormCreator$Input = F4(
-	function (a, b, c, d) {
-		return {title: a, type$: b, value: c, id: d};
-	});
 var _user$project$FormCreator$inputUpdate = F3(
 	function (id, value, input) {
 		return A4(
-			_user$project$FormCreator$Input,
+			_user$project$Models$Input,
 			input.title,
 			input.type$,
 			_elm_lang$core$Native_Utils.eq(input.id, id) ? value : input.value,
 			input.id);
 	});
-var _user$project$FormCreator$Form = F5(
-	function (a, b, c, d, e) {
-		return {name: a, inputs: b, id: c, errors: d, response: e};
-	});
-var _user$project$FormCreator$Submit = {ctor: 'Submit'};
-var _user$project$FormCreator$Text = {ctor: 'Text'};
-var _user$project$FormCreator$Email = {ctor: 'Email'};
 var _user$project$FormCreator$init = {
 	ctor: '_Tuple2',
 	_0: {
@@ -85,34 +70,28 @@ var _user$project$FormCreator$init = {
 		response: '',
 		inputs: _elm_lang$core$Native_List.fromArray(
 			[
-				A4(_user$project$FormCreator$Input, 'Email', _user$project$FormCreator$Email, '', 1),
-				A4(_user$project$FormCreator$Input, 'Name;', _user$project$FormCreator$Text, '', 2),
-				A4(_user$project$FormCreator$Input, 'submit', _user$project$FormCreator$Submit, '', 3)
+				A4(_user$project$Models$Input, 'Email', _user$project$Models$Email, '', 1),
+				A4(_user$project$Models$Input, 'Name;', _user$project$Models$Text, '', 2),
+				A4(_user$project$Models$Input, 'submit', _user$project$Models$Submit, '', 3)
 			])
 	},
 	_1: _elm_lang$core$Platform_Cmd$none
 };
-var _user$project$FormCreator$FormFailed = function (a) {
-	return {ctor: 'FormFailed', _0: a};
-};
-var _user$project$FormCreator$FormSaved = function (a) {
-	return {ctor: 'FormSaved', _0: a};
-};
-var _user$project$FormCreator$formSubmit = function (form) {
-	return {
-		ctor: '_Tuple2',
-		_0: form,
-		_1: A3(
-			_elm_lang$core$Task$perform,
-			_user$project$FormCreator$FormFailed,
-			_user$project$FormCreator$FormSaved,
-			A3(
-				_NoRedInk$elm_rails$Rails$post,
-				_NoRedInk$elm_rails$Rails$always(_user$project$FormCreator$decodeResponse),
-				'/forms',
-				_user$project$FormCreator$encodeFormInJson(form)))
-	};
-};
+var _user$project$FormCreator$redirect = _elm_lang$core$Native_Platform.outgoingPort(
+	'redirect',
+	function (v) {
+		return v;
+	});
+var _user$project$FormCreator$formSaved = F2(
+	function (form, url) {
+		return {
+			ctor: '_Tuple2',
+			_0: _elm_lang$core$Native_Utils.update(
+				form,
+				{errors: '', response: url}),
+			_1: _user$project$FormCreator$redirect(url)
+		};
+	});
 var _user$project$FormCreator$update = F2(
 	function (msg, form) {
 		var _p0 = msg;
@@ -133,7 +112,7 @@ var _user$project$FormCreator$update = F2(
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'FormSaved':
-				return {ctor: '_Tuple2', _0: form, _1: _elm_lang$core$Platform_Cmd$none};
+				return A2(_user$project$FormCreator$formSaved, form, _p0._0);
 			default:
 				return {
 					ctor: '_Tuple2',
@@ -146,91 +125,13 @@ var _user$project$FormCreator$update = F2(
 				};
 		}
 	});
-var _user$project$FormCreator$InputUpdate = F2(
-	function (a, b) {
-		return {ctor: 'InputUpdate', _0: a, _1: b};
-	});
-var _user$project$FormCreator$baseInputView = function (input) {
-	return A2(
-		_elm_lang$html$Html$div,
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_lang$html$Html_Attributes$class('form-group')
-			]),
-		_elm_lang$core$Native_List.fromArray(
-			[
-				A2(
-				_elm_lang$html$Html$label,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html_Attributes$for(
-						_user$project$FormCreator$inputIdentifier(input))
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html$text(input.title)
-					])),
-				A2(
-				_elm_lang$html$Html$input,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html_Attributes$type$(
-						_elm_lang$core$Basics$toString(input.type$)),
-						_elm_lang$html$Html_Attributes$class('form-control'),
-						_elm_lang$html$Html_Attributes$id(
-						_user$project$FormCreator$inputIdentifier(input)),
-						_elm_lang$html$Html_Events$onInput(
-						_user$project$FormCreator$InputUpdate(input.id))
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[]))
-			]));
-};
-var _user$project$FormCreator$inputView = function (myInput) {
-	var _p1 = myInput.type$;
-	switch (_p1.ctor) {
-		case 'Email':
-			return _user$project$FormCreator$baseInputView(myInput);
-		case 'Text':
-			return _user$project$FormCreator$baseInputView(myInput);
-		default:
-			return _user$project$FormCreator$submitInputView(myInput);
-	}
-};
-var _user$project$FormCreator$FormSubmit = {ctor: 'FormSubmit'};
-var _user$project$FormCreator$view = function (myForm) {
-	return A2(
-		_elm_lang$html$Html$div,
-		_elm_lang$core$Native_List.fromArray(
-			[]),
-		_elm_lang$core$Native_List.fromArray(
-			[
-				A2(
-				_elm_lang$html$Html$h2,
-				_elm_lang$core$Native_List.fromArray(
-					[]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html$text(myForm.name)
-					])),
-				A2(
-				_elm_lang$html$Html$form,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html_Events$onSubmit(_user$project$FormCreator$FormSubmit)
-					]),
-				A2(_elm_lang$core$List$map, _user$project$FormCreator$inputView, myForm.inputs)),
-				_elm_lang$html$Html$text(
-				_elm_lang$core$Basics$toString(myForm))
-			]));
-};
 var _user$project$FormCreator$main = {
 	main: _elm_lang$html$Html_App$program(
 		{
 			init: _user$project$FormCreator$init,
-			view: _user$project$FormCreator$view,
+			view: _user$project$Views$view,
 			update: _user$project$FormCreator$update,
-			subscriptions: function (_p2) {
+			subscriptions: function (_p1) {
 				return _elm_lang$core$Platform_Sub$none;
 			}
 		})

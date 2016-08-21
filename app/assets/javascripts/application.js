@@ -12,7 +12,5 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require Main
-//= require FormTest
 //= require FormCreator
 //= require app

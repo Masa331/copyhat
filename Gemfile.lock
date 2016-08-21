@@ -41,10 +41,13 @@ GEM
     addressable (2.4.0)
     airbrussh (1.0.2)
       sshkit (>= 1.6.1, != 1.7.0)
+    annotate (2.7.1)
+      activerecord (>= 3.2, < 6.0)
+      rake (>= 10.4, < 12.0)
     arel (7.0.0)
-    autoprefixer-rails (6.3.7)
+    autoprefixer-rails (6.4.0.2)
       execjs
-    bootstrap (4.0.0.alpha3)
+    bootstrap (4.0.0.alpha3.1)
       autoprefixer-rails (>= 6.0.3)
       sass (>= 3.4.19)
     builder (3.2.2)
@@ -226,7 +229,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bootstrap (>= 4.0.0.alpha3)
+  annotate
+  bootstrap (>= 4.0.0.alpha3.1)
   byebug
   capistrano
   capistrano-bundler

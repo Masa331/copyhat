@@ -14,7 +14,8 @@ gem 'jbuilder', '~> 2.5'
 gem 'execjs'
 gem 'therubyracer'
 
-gem 'bootstrap', '>=4.0.0.alpha3'
+gem 'bootstrap', '>=4.0.0.alpha3.1'
+gem 'annotate'
 
 group :development, :test do
   gem 'byebug', platform: :mri

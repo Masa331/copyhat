@@ -1,0 +1,162 @@
+var _user$project$Views$inputIdentifier = function (input) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		_elm_lang$core$String$toLower(
+			_elm_lang$core$Basics$toString(input.type$)),
+		_elm_lang$core$Basics$toString(input.id));
+};
+var _user$project$Views$submitInputView = function (submitInput) {
+	return A2(
+		_elm_lang$html$Html$button,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$type$('submit'),
+				_elm_lang$html$Html_Attributes$class('btn btn-primary')
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html$text(submitInput.title)
+			]));
+};
+var _user$project$Views$baseInputView = function (input) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$class('form-group')
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$label,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$for(
+						_user$project$Views$inputIdentifier(input))
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text(input.title)
+					])),
+				A2(
+				_elm_lang$html$Html$input,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$type$(
+						_elm_lang$core$Basics$toString(input.type$)),
+						_elm_lang$html$Html_Attributes$class('form-control'),
+						_elm_lang$html$Html_Attributes$id(
+						_user$project$Views$inputIdentifier(input)),
+						_elm_lang$html$Html_Events$onInput(
+						_user$project$Messages$InputUpdate(input.id))
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[]))
+			]));
+};
+var _user$project$Views$inputView = function (myInput) {
+	var _p0 = myInput.type$;
+	switch (_p0.ctor) {
+		case 'Email':
+			return _user$project$Views$baseInputView(myInput);
+		case 'Text':
+			return _user$project$Views$baseInputView(myInput);
+		default:
+			return _user$project$Views$submitInputView(myInput);
+	}
+};
+var _user$project$Views$formGrid = function (form) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$class('col-sm-6')
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$h2,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text(form.name)
+					])),
+				A2(
+				_elm_lang$html$Html$form,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Events$onSubmit(_user$project$Messages$FormSubmit)
+					]),
+				A2(_elm_lang$core$List$map, _user$project$Views$inputView, form.inputs))
+			]));
+};
+var _user$project$Views$inputTemplates = A2(
+	_elm_lang$html$Html$div,
+	_elm_lang$core$Native_List.fromArray(
+		[
+			_elm_lang$html$Html_Attributes$class('col-sm-6')
+		]),
+	_elm_lang$core$Native_List.fromArray(
+		[
+			A2(
+			_elm_lang$html$Html$form,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html$div,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Attributes$class('form-group')
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							A2(
+							_elm_lang$html$Html$label,
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html_Attributes$for('textInput')
+								]),
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html$text('Text')
+								])),
+							A2(
+							_elm_lang$html$Html$input,
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html_Attributes$type$('text'),
+									_elm_lang$html$Html_Attributes$class('form-control'),
+									_elm_lang$html$Html_Attributes$id('textInput'),
+									_elm_lang$html$Html_Attributes$name('textInput')
+								]),
+							_elm_lang$core$Native_List.fromArray(
+								[]))
+						])),
+					A2(
+					_elm_lang$html$Html$button,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Attributes$class('btn btn-primary')
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html$text('Talcitko')
+						]))
+				]))
+		]));
+var _user$project$Views$view = function (form) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$class('row')
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_user$project$Views$inputTemplates,
+				_user$project$Views$formGrid(form)
+			]));
+};

@@ -1,2 +1,26 @@
-<h1>Dashboard</h1>
-<%= link_to 'Formuláře', forms_path %>
+<div class="row">
+  <div class="col-sm-12">
+    <p class="lead text-xs-center">
+      CopyHat je aplikace pro rychlou a jednoduchou tvorbu formulářů.
+    </p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-5">
+
+    <h2>Funkce:</h2>
+    <ul>
+      <li>Vytvoříte do 5 minut</li>
+      <li>Dostanete okamžitou notifikaci o vyplnění</li>
+      <li>Jednoduše stáhnete data</li>
+      <li>Pošlete k vyplnění pomocí jednoho odkazu nebo připevníte na vsé stránky</li>
+    </ul>
+
+    <%= link_to "Přihlásit", new_login_path, class: 'btn btn-success btn-lg btn-block' %>
+  </div>
+
+  <div class="col-sm-7">
+    <%= image_tag 'form2.png', class: 'img-fluid m-x-auto' %>
+  </div>
+</div>

@@ -1,14 +1,21 @@
-<h1><%= @form.name %></h1>
-<p>Tady bude asi nejaky popis formulare</p>
-<%= link_to 'Stáhnout v csv', form_path(@form, format: :csv), format: :csv %>
+<div class="row">
+  <div class="col-sm-12">
+    <h1>
+      <%= @form.name %>
+      <small class='text-muted'>Tady bude asi nejaky popis formulare</small>
+    </h1>
+
+    <%= link_to 'Upravit', edit_form_path(@form) %>
+    <%= link_to 'Stáhnout v csv', form_path(@form, format: :csv) %>
+    <%= link_to 'Smazat', form_path(@form), method: :delete %>
+  </div>
+</div>
 
 <div class="row">
-  <div class="col-sm-6">
-    <%= create_form(@form) %>
-  </div>
+  <div class="col-sm-12">
+    <h2>Vyplnění</h2>
 
-  <div class="col-sm-6">
-    <table class="form-table">
+    <table class="table table-sm">
       <thead>
         <tr>
           <% @form.form_inputs.each do |input| %>
@@ -20,15 +27,20 @@
       </thead>
 
       <tbody>
-        <% @form.data_entries.each do |entry| %>
+        <% if @form.data_entries.empty? %>
           <tr>
-            <% entry.inputs.each do |input| %>
-              <td><%= input[1] %></td>
-            <% end %>
+            <td colspan="<%= @form.form_inputs.count %>" class="text-xs-center"><i>Žádné vyplnění</i></td>
           </tr>
+        <% else %>
+          <% @form.data_entries.each do |entry| %>
+            <tr>
+              <% entry.inputs.each do |input| %>
+                <td><%= input[1] %></td>
+              <% end %>
+            </tr>
+          <% end %>
         <% end %>
       </tbody>
     </table>
   </div>
 </div>
-
