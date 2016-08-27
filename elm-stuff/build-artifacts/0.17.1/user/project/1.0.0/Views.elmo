@@ -143,7 +143,7 @@ var _user$project$Views$inputTemplates = A2(
 						]),
 					_elm_lang$core$Native_List.fromArray(
 						[
-							_elm_lang$html$Html$text('Talcitko')
+							_elm_lang$html$Html$text('push')
 						]))
 				]))
 		]));
