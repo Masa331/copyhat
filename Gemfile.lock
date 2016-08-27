@@ -11,7 +11,7 @@ GIT
 PATH
   remote: /home/masa331/pracovni/apps/elm_sprockets
   specs:
-    elm_sprockets (0.0.3)
+    elm_sprockets (0.2.0)
       rails (~> 5.0)
 
 GEM

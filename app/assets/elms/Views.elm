@@ -18,7 +18,7 @@ inputTemplates =
                          [label [for "textInput"] [text "Text"],
                           input [type' "text", class "form-control", id "textInput", name "textInput"] []],
                      -- button [class "btn btn-primary"] [text "push"]]]
-                     button [class "btn btn-primary"] [text "hoven"]]]
+                     button [class "btn btn-primary"] [text "stac"]]]
 
 formGrid : Form -> Html Msg
 formGrid form =

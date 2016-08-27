@@ -1,0 +1,11 @@
+var _user$project$Messages$FormFailed = function (a) {
+	return {ctor: 'FormFailed', _0: a};
+};
+var _user$project$Messages$FormSaved = function (a) {
+	return {ctor: 'FormSaved', _0: a};
+};
+var _user$project$Messages$InputUpdate = F2(
+	function (a, b) {
+		return {ctor: 'InputUpdate', _0: a, _1: b};
+	});
+var _user$project$Messages$FormSubmit = {ctor: 'FormSubmit'};
