@@ -12,6 +12,6 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require Views
+//= require_tree .
 //= require FormCreator
 //= require app
