@@ -17,13 +17,14 @@ inputTemplates =
       [Html.form [] [div [class "form-group"]
                          [label [for "textInput"] [text "Text"],
                           input [type' "text", class "form-control", id "textInput", name "textInput"] []],
-                     -- button [class "btn btn-primary"] [text "push"]]]
-                     button [class "btn btn-primary"] [text "stac"]]]
+                     button [class "btn btn-primary"] [text "Stlac"]]]
 
 formGrid : Form -> Html Msg
 formGrid form =
-  div [class "col-sm-6"] [h2 [] [text form.name],
-                          Html.form [onSubmit FormSubmit] (List.map inputView form.inputs)]
+  div [class "col-sm-6"]
+      [div [class "card card-block"]
+           [h2 [] [text form.name],
+            Html.form [onSubmit FormSubmit] (List.map inputView form.inputs)]]
 
 inputView : Input -> Html Msg
 inputView myInput =
@@ -38,8 +39,7 @@ baseInputView input =
       [label [for (inputIdentifier input)] [text input.title],
        Html.input [type' (toString input.type'),
                    class "form-control",
-                   id (inputIdentifier input),
-                   onInput (InputUpdate input.id)]
+                   id (inputIdentifier input)]
                   []]
 
 

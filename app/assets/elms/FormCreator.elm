@@ -1,4 +1,6 @@
 --= depend_on Views
+--= depend_on Messages
+--= depend_on Models
 
 port module FormCreator exposing (..)
 
@@ -28,8 +30,6 @@ init =
                Input "submit" Submit "" 3] },
    Cmd.none)
 
--- Views --
-
 
 -- Updates --
 
@@ -37,8 +37,6 @@ update : Msg -> Form -> (Form, Cmd Msg)
 update msg form =
   case msg of
     FormSubmit -> formSubmit form
-    InputUpdate id value ->
-      ({ form | inputs = List.map (inputUpdate id value) form.inputs}, Cmd.none)
     FormSaved url -> formSaved form url
     FormFailed error -> ({ form | errors = toString error }, Cmd.none)
 

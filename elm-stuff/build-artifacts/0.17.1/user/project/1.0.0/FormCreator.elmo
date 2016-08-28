@@ -98,19 +98,6 @@ var _user$project$FormCreator$update = F2(
 		switch (_p0.ctor) {
 			case 'FormSubmit':
 				return _user$project$FormCreator$formSubmit(form);
-			case 'InputUpdate':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						form,
-						{
-							inputs: A2(
-								_elm_lang$core$List$map,
-								A2(_user$project$FormCreator$inputUpdate, _p0._0, _p0._1),
-								form.inputs)
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
 			case 'FormSaved':
 				return A2(_user$project$FormCreator$formSaved, form, _p0._0);
 			default:
