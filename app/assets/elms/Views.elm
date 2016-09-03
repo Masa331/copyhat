@@ -7,9 +7,9 @@ import Messages exposing (..)
 import Models exposing (..)
 import String
 
-view : Form -> Html Msg
-view form =
-  div [class "row"] [inputTemplates, formGrid form]
+view : Model -> Html Msg
+view model =
+  div [class "row"] [inputTemplates, formGrid model]
 
 inputTemplates : Html Msg
 inputTemplates =
@@ -19,12 +19,23 @@ inputTemplates =
                           input [type' "text", class "form-control", id "textInput", name "textInput"] []],
                      button [class "btn btn-primary"] [text "Stlac"]]]
 
-formGrid : Form -> Html Msg
-formGrid form =
+formGrid : Model -> Html Msg
+formGrid model =
   div [class "col-sm-6"]
-      [div [class "card card-block"]
-           [h2 [] [text form.name],
-            Html.form [onSubmit FormSubmit] (List.map inputView form.inputs)]]
+      [ div [] [text (toString model.mouse_position)]
+      , div [] [text (toString model.elementPosition)]
+      , div [] [text (toString model.form.inputs)]
+      , div [class "card card-block"]
+            [h2 [] [text model.form.name]
+            , Html.form [] (inputViews model)
+            ]
+      , div [] [a [href "#", onClick FormSubmit] [text "Vytvorit formular"]]
+      ]
+
+inputViews : Model -> List (Html Msg)
+inputViews model =
+  List.map inputView (List.sortBy .y_position model.form.inputs)
+
 
 inputView : Input -> Html Msg
 inputView myInput =
@@ -35,12 +46,13 @@ inputView myInput =
 
 baseInputView : Input -> Html Msg
 baseInputView input =
-  div [class "form-group"]
-      [label [for (inputIdentifier input)] [text input.title],
-       Html.input [type' (toString input.type'),
-                   class "form-control",
-                   id (inputIdentifier input)]
-                  []]
+  div [class "form-group draggable", id ("input-" ++ (toString input.id)), onMouseDown (DragStart input.id)]
+      [label [for (inputIdentifier input)] [text input.title]
+      , Html.input [type' (toString input.type')
+                   , class "form-control"
+                   , id (inputIdentifier input)
+                   ] []
+      ]
 
 
 submitInputView : Input -> Html msg

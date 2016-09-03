@@ -1,3 +1,19 @@
+var _user$project$FormCreator$elements_being_dragged = function (model) {
+	return A2(
+		_elm_lang$core$List$any,
+		function (_) {
+			return _.being_dragged;
+		},
+		model.form.inputs);
+};
+var _user$project$FormCreator$subscriptions = function (model) {
+	var getPositons = _user$project$Ports$getPosition(_user$project$Messages$PositionReturned);
+	var mouse_up = _user$project$FormCreator$elements_being_dragged(model) ? _elm_lang$mouse$Mouse$ups(_user$project$Messages$DragStop) : _elm_lang$core$Platform_Sub$none;
+	var clicks = _elm_lang$mouse$Mouse$clicks(_user$project$Messages$MouseClick);
+	return _elm_lang$core$Platform_Sub$batch(
+		_elm_lang$core$Native_List.fromArray(
+			[clicks, mouse_up]));
+};
 var _user$project$FormCreator$encodeFormInJson = function (form) {
 	var inputs = _elm_lang$core$Json_Encode$list(
 		A2(
@@ -37,10 +53,10 @@ var _user$project$FormCreator$encodeFormInJson = function (form) {
 };
 var _user$project$FormCreator$failureDecoder = A2(_elm_lang$core$Json_Decode_ops[':='], 'failure', _elm_lang$core$Json_Decode$string);
 var _user$project$FormCreator$successDecoder = A2(_elm_lang$core$Json_Decode_ops[':='], 'redirect', _elm_lang$core$Json_Decode$string);
-var _user$project$FormCreator$formSubmit = function (form) {
+var _user$project$FormCreator$formSubmit = function (model) {
 	return {
 		ctor: '_Tuple2',
-		_0: form,
+		_0: model,
 		_1: A3(
 			_elm_lang$core$Task$perform,
 			_user$project$Messages$FormFailed,
@@ -49,77 +65,87 @@ var _user$project$FormCreator$formSubmit = function (form) {
 				_NoRedInk$elm_rails$Rails$post,
 				{success: _user$project$FormCreator$successDecoder, failure: _user$project$FormCreator$failureDecoder},
 				'/forms',
-				_user$project$FormCreator$encodeFormInJson(form)))
+				_user$project$FormCreator$encodeFormInJson(model.form)))
 	};
 };
-var _user$project$FormCreator$inputUpdate = F3(
-	function (id, value, input) {
-		return A4(
-			_user$project$Models$Input,
-			input.title,
-			input.type$,
-			_elm_lang$core$Native_Utils.eq(input.id, id) ? value : input.value,
-			input.id);
-	});
-var _user$project$FormCreator$init = {
-	ctor: '_Tuple2',
-	_0: {
-		name: 'Prvni hovno Formular',
-		id: 1,
-		errors: '',
-		response: '',
-		inputs: _elm_lang$core$Native_List.fromArray(
-			[
-				A4(_user$project$Models$Input, 'Email', _user$project$Models$Email, '', 1),
-				A4(_user$project$Models$Input, 'Name;', _user$project$Models$Text, '', 2),
-				A4(_user$project$Models$Input, 'submit', _user$project$Models$Submit, '', 3)
-			])
-	},
-	_1: _elm_lang$core$Platform_Cmd$none
-};
-var _user$project$FormCreator$redirect = _elm_lang$core$Native_Platform.outgoingPort(
-	'redirect',
-	function (v) {
-		return v;
-	});
 var _user$project$FormCreator$formSaved = F2(
-	function (form, url) {
+	function (model, url) {
 		return {
 			ctor: '_Tuple2',
-			_0: _elm_lang$core$Native_Utils.update(
-				form,
-				{errors: '', response: url}),
-			_1: _user$project$FormCreator$redirect(url)
+			_0: model,
+			_1: _user$project$Ports$redirect(url)
 		};
 	});
+var _user$project$FormCreator$stopDragStatus = function (model) {
+	var oldForm = model.form;
+	var newInputs = A2(
+		_elm_lang$core$List$map,
+		function (input) {
+			return _elm_lang$core$Native_Utils.update(
+				input,
+				{being_dragged: false});
+		},
+		oldForm.inputs);
+	var newModel = _elm_lang$core$Native_Utils.update(
+		model,
+		{
+			form: _elm_lang$core$Native_Utils.update(
+				oldForm,
+				{inputs: newInputs})
+		});
+	return {ctor: '_Tuple2', _0: newModel, _1: _elm_lang$core$Platform_Cmd$none};
+};
+var _user$project$FormCreator$updateDragStatus = F2(
+	function (id, model) {
+		var oldForm = model.form;
+		var newInputs = A2(
+			_elm_lang$core$List$map,
+			function (input) {
+				return _elm_lang$core$Native_Utils.eq(input.id, id) ? _elm_lang$core$Native_Utils.update(
+					input,
+					{being_dragged: true}) : input;
+			},
+			oldForm.inputs);
+		var newModel = _elm_lang$core$Native_Utils.update(
+			model,
+			{
+				form: _elm_lang$core$Native_Utils.update(
+					oldForm,
+					{inputs: newInputs})
+			});
+		return {ctor: '_Tuple2', _0: newModel, _1: _elm_lang$core$Platform_Cmd$none};
+	});
+var _user$project$FormCreator$updatePosition = F2(
+	function (position, model) {
+		return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+	});
 var _user$project$FormCreator$update = F2(
-	function (msg, form) {
+	function (msg, model) {
 		var _p0 = msg;
 		switch (_p0.ctor) {
 			case 'FormSubmit':
-				return _user$project$FormCreator$formSubmit(form);
+				return _user$project$FormCreator$formSubmit(model);
 			case 'FormSaved':
-				return A2(_user$project$FormCreator$formSaved, form, _p0._0);
-			default:
+				return A2(_user$project$FormCreator$formSaved, model, _p0._0);
+			case 'FormFailed':
+				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+			case 'MouseClick':
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
-						form,
-						{
-							errors: _elm_lang$core$Basics$toString(_p0._0)
-						}),
+						model,
+						{mouse_position: _p0._0}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
+			case 'DragStart':
+				return A2(_user$project$FormCreator$updateDragStatus, _p0._0, model);
+			case 'DragStop':
+				return _user$project$FormCreator$stopDragStatus(model);
+			default:
+				return A2(_user$project$FormCreator$updatePosition, _p0._0, model);
 		}
 	});
 var _user$project$FormCreator$main = {
 	main: _elm_lang$html$Html_App$program(
-		{
-			init: _user$project$FormCreator$init,
-			view: _user$project$Views$view,
-			update: _user$project$FormCreator$update,
-			subscriptions: function (_p1) {
-				return _elm_lang$core$Platform_Sub$none;
-			}
-		})
+		{init: _user$project$Models$init, view: _user$project$Views$view, update: _user$project$FormCreator$update, subscriptions: _user$project$FormCreator$subscriptions})
 };

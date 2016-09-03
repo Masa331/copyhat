@@ -23,7 +23,14 @@ var _user$project$Views$baseInputView = function (input) {
 		_elm_lang$html$Html$div,
 		_elm_lang$core$Native_List.fromArray(
 			[
-				_elm_lang$html$Html_Attributes$class('form-group')
+				_elm_lang$html$Html_Attributes$class('form-group draggable'),
+				_elm_lang$html$Html_Attributes$id(
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'input-',
+					_elm_lang$core$Basics$toString(input.id))),
+				_elm_lang$html$Html_Events$onMouseDown(
+				_user$project$Messages$DragStart(input.id))
 			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
@@ -63,7 +70,18 @@ var _user$project$Views$inputView = function (myInput) {
 			return _user$project$Views$submitInputView(myInput);
 	}
 };
-var _user$project$Views$formGrid = function (form) {
+var _user$project$Views$inputViews = function (model) {
+	return A2(
+		_elm_lang$core$List$map,
+		_user$project$Views$inputView,
+		A2(
+			_elm_lang$core$List$sortBy,
+			function (_) {
+				return _.y_position;
+			},
+			model.form.inputs));
+};
+var _user$project$Views$formGrid = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
 		_elm_lang$core$Native_List.fromArray(
@@ -72,6 +90,33 @@ var _user$project$Views$formGrid = function (form) {
 			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
+				A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text(
+						_elm_lang$core$Basics$toString(model.mouse_position))
+					])),
+				A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text(
+						_elm_lang$core$Basics$toString(model.elementPosition))
+					])),
+				A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text(
+						_elm_lang$core$Basics$toString(model.form.inputs))
+					])),
 				A2(
 				_elm_lang$html$Html$div,
 				_elm_lang$core$Native_List.fromArray(
@@ -86,15 +131,31 @@ var _user$project$Views$formGrid = function (form) {
 							[]),
 						_elm_lang$core$Native_List.fromArray(
 							[
-								_elm_lang$html$Html$text(form.name)
+								_elm_lang$html$Html$text(model.form.name)
 							])),
 						A2(
 						_elm_lang$html$Html$form,
 						_elm_lang$core$Native_List.fromArray(
+							[]),
+						_user$project$Views$inputViews(model))
+					])),
+				A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$a,
+						_elm_lang$core$Native_List.fromArray(
 							[
-								_elm_lang$html$Html_Events$onSubmit(_user$project$Messages$FormSubmit)
+								_elm_lang$html$Html_Attributes$href('#'),
+								_elm_lang$html$Html_Events$onClick(_user$project$Messages$FormSubmit)
 							]),
-						A2(_elm_lang$core$List$map, _user$project$Views$inputView, form.inputs))
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html$text('Vytvorit formular')
+							]))
 					]))
 			]));
 };
@@ -154,7 +215,7 @@ var _user$project$Views$inputTemplates = A2(
 						]))
 				]))
 		]));
-var _user$project$Views$view = function (form) {
+var _user$project$Views$view = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
 		_elm_lang$core$Native_List.fromArray(
@@ -164,6 +225,6 @@ var _user$project$Views$view = function (form) {
 		_elm_lang$core$Native_List.fromArray(
 			[
 				_user$project$Views$inputTemplates,
-				_user$project$Views$formGrid(form)
+				_user$project$Views$formGrid(model)
 			]));
 };

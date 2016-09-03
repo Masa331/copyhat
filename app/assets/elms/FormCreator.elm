@@ -1,8 +1,9 @@
 --= depend_on Views
 --= depend_on Messages
 --= depend_on Models
+--= depend_on Ports
 
-port module FormCreator exposing (..)
+module FormCreator exposing (..)
 
 import Html.App exposing (..)
 import String
@@ -14,42 +15,57 @@ import Json.Encode exposing (..)
 import Messages exposing (..)
 import Models exposing (..)
 import Views exposing (..)
-
-port redirect : String -> Cmd msg
-
--- Model --
-
-init : (Form, Cmd Msg)
-init =
-  ({ name = "Prvni hovno Formular",
-     id = 1,
-     errors = "",
-     response = "",
-     inputs = [Input "Email" Email "" 1,
-               Input "Name;" Models.Text "" 2,
-               Input "submit" Submit "" 3] },
-   Cmd.none)
+import Mouse exposing (..)
+import Ports exposing (..)
 
 
 -- Updates --
 
-update : Msg -> Form -> (Form, Cmd Msg)
-update msg form =
+update : Msg -> Model -> (Model, Cmd Msg)
+update msg model =
   case msg of
-    FormSubmit -> formSubmit form
-    FormSaved url -> formSaved form url
-    FormFailed error -> ({ form | errors = toString error }, Cmd.none)
+    FormSubmit -> formSubmit model
+    FormSaved url -> formSaved model url
+    FormFailed _ -> (model, Cmd.none)
+    MouseClick newPosition -> getElementPositions model
+    DragStart id -> updateDragStatus id model
+    DragStop _ -> stopDragStatus model
+    PositionReturned position -> updatePosition position model
 
-formSaved : Form -> String -> (Form, Cmd Msg)
-formSaved form url =
-  ({ form | errors = "", response = url}, redirect url)
+getElementPositions : Model -> (Model, Cmd Msg)
+getElementPositions model =
+  ({ model | mouse_position = newPosition }, Cmd.none)
 
-inputUpdate : Int -> String -> Input -> Input
-inputUpdate id value input =
-  Input input.title input.type' (if input.id == id then value else input.value) input.id
 
-formSubmit form =
-  (form, Task.perform FormFailed FormSaved (Rails.post ({ success = successDecoder, failure = failureDecoder}) "/forms" (encodeFormInJson form)))
+updatePosition : ElementPosition -> Model -> (Model, Cmd Msg)
+updatePosition position model =
+  (model, Cmd.none)
+
+
+updateDragStatus : Int -> Model -> (Model, Cmd Msg)
+updateDragStatus id model =
+  let
+    oldForm = model.form
+    newInputs = List.map (\input -> if input.id == id then { input | being_dragged = True } else input ) oldForm.inputs
+    newModel = { model | form = { oldForm | inputs = newInputs } }
+  in
+    (newModel, Cmd.none)
+
+stopDragStatus : Model -> (Model, Cmd Msg)
+stopDragStatus model =
+  let
+    oldForm = model.form
+    newInputs = List.map (\input -> { input | being_dragged = False } ) oldForm.inputs
+    newModel = { model | form = { oldForm | inputs = newInputs } }
+  in
+    (newModel, Cmd.none)
+
+formSaved : Model -> String -> (Model, Cmd Msg)
+formSaved model url =
+  (model, redirect url)
+
+formSubmit model =
+  (model, Task.perform FormFailed FormSaved (Rails.post ({ success = successDecoder, failure = failureDecoder}) "/forms" (encodeFormInJson model.form)))
 
 successDecoder =
   ("redirect" := Json.Decode.string)
@@ -67,5 +83,18 @@ encodeFormInJson form =
     Http.string (Json.Encode.encode 0 (Json.Encode.object [("name", name), ("id", id), ("inputs", inputs)]))
 
 
+subscriptions : Model -> Sub Msg
+subscriptions model =
+  let
+    clicks = Mouse.clicks MouseClick
+    mouse_up = if elements_being_dragged model then Mouse.ups DragStop else Sub.none
+    getPositons = getPosition PositionReturned
+  in
+    Sub.batch [clicks, mouse_up]
+
+elements_being_dragged : Model -> Bool
+elements_being_dragged model =
+  List.any .being_dragged model.form.inputs
+
 main =
-  Html.App.program { init = init, view = view, update = update, subscriptions = \_ -> Sub.none }
+  Html.App.program { init = init, view = view, update = update, subscriptions = subscriptions }

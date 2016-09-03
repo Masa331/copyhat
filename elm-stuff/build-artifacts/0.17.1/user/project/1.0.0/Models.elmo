@@ -1,11 +1,35 @@
-var _user$project$Models$Input = F4(
-	function (a, b, c, d) {
-		return {title: a, type$: b, value: c, id: d};
-	});
-var _user$project$Models$Form = F5(
+var _user$project$Models$blankPosition = {x: 0};
+var _user$project$Models$Input = F5(
 	function (a, b, c, d, e) {
-		return {name: a, inputs: b, id: c, errors: d, response: e};
+		return {title: a, type$: b, id: c, y_position: d, being_dragged: e};
+	});
+var _user$project$Models$Form = F3(
+	function (a, b, c) {
+		return {name: a, inputs: b, id: c};
+	});
+var _user$project$Models$Model = F3(
+	function (a, b, c) {
+		return {form: a, mouse_position: b, elementPosition: c};
 	});
 var _user$project$Models$Submit = {ctor: 'Submit'};
 var _user$project$Models$Text = {ctor: 'Text'};
 var _user$project$Models$Email = {ctor: 'Email'};
+var _user$project$Models$starterForm = {
+	name: 'Prvni hovno Formular',
+	id: 1,
+	inputs: _elm_lang$core$Native_List.fromArray(
+		[
+			A5(_user$project$Models$Input, 'Email', _user$project$Models$Email, 1, 1, false),
+			A5(_user$project$Models$Input, 'Name;', _user$project$Models$Text, 2, 2, false),
+			A5(_user$project$Models$Input, 'submit', _user$project$Models$Submit, 3, 3, false)
+		])
+};
+var _user$project$Models$init = {
+	ctor: '_Tuple2',
+	_0: {
+		mouse_position: {x: 0, y: 0},
+		form: _user$project$Models$starterForm,
+		elementPosition: _user$project$Models$blankPosition
+	},
+	_1: _elm_lang$core$Platform_Cmd$none
+};

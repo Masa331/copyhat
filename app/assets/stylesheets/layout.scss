@@ -9,8 +9,6 @@
 
 /* Header
 ------------------------------------- */
-.neco {}
-
 nav.navbar {
   padding-top: 12px;
 
@@ -47,6 +45,12 @@ hr.header-divider {
 
 /* Content
 ------------------------------------- */
+
+.draggable:hover {
+  cursor: pointer;
+  border: 1px dotted;
+
+}
 
 
 /* Utilities

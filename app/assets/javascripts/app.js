@@ -6,6 +6,13 @@ $(document).ready(function() {
     app.ports.redirect.subscribe(function(url) {
       window.location.replace(url)
     });
+
+    app.ports.getPosition.subscribe(function(id) {
+      element = document.getElementById(id);
+      positions = element.getBoundingClientRect();
+
+      app.ports.positions.send(positions);
+    });
   }
 });
 

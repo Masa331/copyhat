@@ -1,0 +1,14 @@
+var _user$project$Ports$redirect = _elm_lang$core$Native_Platform.outgoingPort(
+	'redirect',
+	function (v) {
+		return v;
+	});
+var _user$project$Ports$getPosition = _elm_lang$core$Native_Platform.incomingPort(
+	'getPosition',
+	A2(
+		_elm_lang$core$Json_Decode$andThen,
+		A2(_elm_lang$core$Json_Decode_ops[':='], 'x', _elm_lang$core$Json_Decode$int),
+		function (x) {
+			return _elm_lang$core$Json_Decode$succeed(
+				{x: x});
+		}));

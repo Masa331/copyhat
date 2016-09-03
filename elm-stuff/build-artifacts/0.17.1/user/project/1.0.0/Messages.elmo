@@ -1,3 +1,18 @@
+var _user$project$Messages$ElementPosition = function (a) {
+	return {x: a};
+};
+var _user$project$Messages$PositionReturned = function (a) {
+	return {ctor: 'PositionReturned', _0: a};
+};
+var _user$project$Messages$DragStop = function (a) {
+	return {ctor: 'DragStop', _0: a};
+};
+var _user$project$Messages$DragStart = function (a) {
+	return {ctor: 'DragStart', _0: a};
+};
+var _user$project$Messages$MouseClick = function (a) {
+	return {ctor: 'MouseClick', _0: a};
+};
 var _user$project$Messages$FormFailed = function (a) {
 	return {ctor: 'FormFailed', _0: a};
 };
