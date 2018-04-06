@@ -9,7 +9,7 @@ GIT
       sprockets-rails (< 4.0)
 
 PATH
-  remote: /home/masa331/pracovni/apps/elm_sprockets
+  remote: /home/masa331/pracovni/code/elm/elm_sprockets
   specs:
     elm_sprockets (0.2.0)
       rails (~> 5.0)
@@ -271,4 +271,4 @@ DEPENDENCIES
   web-console
 
 BUNDLED WITH
-   1.12.5
+   1.13.6

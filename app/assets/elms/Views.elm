@@ -7,11 +7,11 @@ import Messages exposing (..)
 import Models exposing (..)
 import String
 
-view : Model -> Html Msg
+-- view : Model -> Html Msg
 view model =
   div [class "row"] [inputTemplates, formGrid model]
 
-inputTemplates : Html Msg
+-- inputTemplates : Html Msg
 inputTemplates =
   div [class "col-sm-6"]
       [Html.form [] [div [class "form-group"]
@@ -19,7 +19,7 @@ inputTemplates =
                           input [type' "text", class "form-control", id "textInput", name "textInput"] []],
                      button [class "btn btn-primary"] [text "Stlac"]]]
 
-formGrid : Model -> Html Msg
+-- formGrid : Model -> Html Msg
 formGrid model =
   div [class "col-sm-6"]
       [ div [] [text (toString model.mouse_position)]
@@ -29,24 +29,24 @@ formGrid model =
             [h2 [] [text model.form.name]
             , Html.form [] (inputViews model)
             ]
-      , div [] [a [href "#", onClick FormSubmit] [text "Vytvorit formular"]]
+      , div [] [a [href "#", onClick (FormMsg CreateForm)] [text "Vytvorit formular"]]
       ]
 
-inputViews : Model -> List (Html Msg)
+-- inputViews : Model -> List (Html Msg)
 inputViews model =
   List.map inputView (List.sortBy .y_position model.form.inputs)
 
 
-inputView : Input -> Html Msg
+-- inputView : Input -> Html Msg
 inputView myInput =
   case myInput.type' of
     Email -> baseInputView myInput
     Text -> baseInputView myInput
     Submit -> submitInputView myInput
 
-baseInputView : Input -> Html Msg
+-- baseInputView : Input -> Html Msg
 baseInputView input =
-  div [class "form-group draggable", id ("input-" ++ (toString input.id)), onMouseDown (DragStart input.id)]
+  div [class "form-group draggable", id ("input-" ++ (toString input.id)), onMouseDown (InputMsg (DragStart input.id))]
       [label [for (inputIdentifier input)] [text input.title]
       , Html.input [type' (toString input.type')
                    , class "form-control"
@@ -55,7 +55,7 @@ baseInputView input =
       ]
 
 
-submitInputView : Input -> Html msg
+-- submitInputView : Input -> Html Msg
 submitInputView submitInput =
   button [type' "submit", class "btn btn-primary"] [text submitInput.title]
 

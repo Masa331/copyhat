@@ -8,10 +8,13 @@ $(document).ready(function() {
     });
 
     app.ports.getPosition.subscribe(function(id) {
-      element = document.getElementById(id);
-      positions = element.getBoundingClientRect();
-
-      app.ports.positions.send(positions);
+      var element = document.getElementById(id);
+      if (element) {
+        var position = element.getBoundingClientRect();
+        app.ports.determinedPositions.send(position);
+      } else {
+        app.ports.determinedPositions.send(null);
+      }
     });
   }
 });

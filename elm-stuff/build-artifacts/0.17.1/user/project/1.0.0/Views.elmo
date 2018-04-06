@@ -30,7 +30,8 @@ var _user$project$Views$baseInputView = function (input) {
 					'input-',
 					_elm_lang$core$Basics$toString(input.id))),
 				_elm_lang$html$Html_Events$onMouseDown(
-				_user$project$Messages$DragStart(input.id))
+				_user$project$Messages$InputMsg(
+					_user$project$Messages$DragStart(input.id)))
 			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
@@ -150,7 +151,8 @@ var _user$project$Views$formGrid = function (model) {
 						_elm_lang$core$Native_List.fromArray(
 							[
 								_elm_lang$html$Html_Attributes$href('#'),
-								_elm_lang$html$Html_Events$onClick(_user$project$Messages$FormSubmit)
+								_elm_lang$html$Html_Events$onClick(
+								_user$project$Messages$FormMsg(_user$project$Messages$CreateForm))
 							]),
 						_elm_lang$core$Native_List.fromArray(
 							[

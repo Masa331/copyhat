@@ -1,0 +1,74 @@
+var _user$project$Forms_Update$encodeFormInJson = function (form) {
+	var inputs = _elm_lang$core$Json_Encode$list(
+		A2(
+			_elm_lang$core$List$map,
+			function (input) {
+				return _elm_lang$core$Json_Encode$object(
+					_elm_lang$core$Native_List.fromArray(
+						[
+							{
+							ctor: '_Tuple2',
+							_0: 'title',
+							_1: _elm_lang$core$Json_Encode$string(input.title)
+						},
+							{
+							ctor: '_Tuple2',
+							_0: 'type',
+							_1: _elm_lang$core$Json_Encode$string(
+								_elm_lang$core$String$toLower(
+									_elm_lang$core$Basics$toString(input.type$)))
+						}
+						]));
+			},
+			form.inputs));
+	var id = _elm_lang$core$Json_Encode$int(form.id);
+	var name = _elm_lang$core$Json_Encode$string(form.name);
+	return _evancz$elm_http$Http$string(
+		A2(
+			_elm_lang$core$Json_Encode$encode,
+			0,
+			_elm_lang$core$Json_Encode$object(
+				_elm_lang$core$Native_List.fromArray(
+					[
+						{ctor: '_Tuple2', _0: 'name', _1: name},
+						{ctor: '_Tuple2', _0: 'id', _1: id},
+						{ctor: '_Tuple2', _0: 'inputs', _1: inputs}
+					]))));
+};
+var _user$project$Forms_Update$failureDecoder = A2(_elm_lang$core$Json_Decode_ops[':='], 'failure', _elm_lang$core$Json_Decode$string);
+var _user$project$Forms_Update$successDecoder = A2(_elm_lang$core$Json_Decode_ops[':='], 'redirect', _elm_lang$core$Json_Decode$string);
+var _user$project$Forms_Update$formSaved = F2(
+	function (model, url) {
+		return {
+			ctor: '_Tuple2',
+			_0: model,
+			_1: _user$project$Redirect$redirect(url)
+		};
+	});
+var _user$project$Forms_Update$createForm = function (model) {
+	return {
+		ctor: '_Tuple2',
+		_0: model,
+		_1: A3(
+			_elm_lang$core$Task$perform,
+			_user$project$Messages$FormFailed,
+			_user$project$Messages$FormSaved,
+			A3(
+				_NoRedInk$elm_rails$Rails$post,
+				{success: _user$project$Forms_Update$successDecoder, failure: _user$project$Forms_Update$failureDecoder},
+				'/forms',
+				_user$project$Forms_Update$encodeFormInJson(model.form)))
+	};
+};
+var _user$project$Forms_Update$update = F2(
+	function (msg, model) {
+		var _p0 = msg;
+		switch (_p0.ctor) {
+			case 'CreateForm':
+				return _user$project$Forms_Update$createForm(model);
+			case 'FormSaved':
+				return A2(_user$project$Forms_Update$formSaved, model, _p0._0);
+			default:
+				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+		}
+	});

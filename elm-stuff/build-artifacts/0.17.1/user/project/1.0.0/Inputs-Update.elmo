@@ -1,0 +1,75 @@
+var _user$project$Inputs_Update$elements_being_dragged = function (model) {
+	return A2(
+		_elm_lang$core$List$any,
+		function (_) {
+			return _.being_dragged;
+		},
+		model.form.inputs);
+};
+var _user$project$Inputs_Update$stopDragStatus = function (model) {
+	var oldForm = model.form;
+	var newInputs = A2(
+		_elm_lang$core$List$map,
+		function (input) {
+			return _elm_lang$core$Native_Utils.update(
+				input,
+				{being_dragged: false});
+		},
+		oldForm.inputs);
+	var newModel = _elm_lang$core$Native_Utils.update(
+		model,
+		{
+			form: _elm_lang$core$Native_Utils.update(
+				oldForm,
+				{inputs: newInputs})
+		});
+	return {ctor: '_Tuple2', _0: newModel, _1: _elm_lang$core$Platform_Cmd$none};
+};
+var _user$project$Inputs_Update$updateDragStatus = F2(
+	function (id, model) {
+		var oldForm = model.form;
+		var newInputs = A2(
+			_elm_lang$core$List$map,
+			function (input) {
+				return _elm_lang$core$Native_Utils.eq(input.id, id) ? _elm_lang$core$Native_Utils.update(
+					input,
+					{being_dragged: true}) : input;
+			},
+			oldForm.inputs);
+		var newModel = _elm_lang$core$Native_Utils.update(
+			model,
+			{
+				form: _elm_lang$core$Native_Utils.update(
+					oldForm,
+					{inputs: newInputs})
+			});
+		return {ctor: '_Tuple2', _0: newModel, _1: _elm_lang$core$Platform_Cmd$none};
+	});
+var _user$project$Inputs_Update$updatePosition = F2(
+	function (position, model) {
+		return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+	});
+var _user$project$Inputs_Update$getElementPositions = F2(
+	function (model, newPosition) {
+		return {
+			ctor: '_Tuple2',
+			_0: _elm_lang$core$Native_Utils.update(
+				model,
+				{mouse_position: newPosition}),
+			_1: _elm_lang$core$Platform_Cmd$none
+		};
+	});
+var _user$project$Inputs_Update$update = F2(
+	function (msg, model) {
+		var _p0 = msg;
+		switch (_p0.ctor) {
+			case 'MouseClick':
+				return A2(_user$project$Inputs_Update$getElementPositions, model, _p0._0);
+			case 'DragStart':
+				return A2(_user$project$Inputs_Update$updateDragStatus, _p0._0, model);
+			case 'DragStop':
+				return _user$project$Inputs_Update$stopDragStatus(model);
+			default:
+				return A2(_user$project$Inputs_Update$updatePosition, _p0._0, model);
+		}
+	});

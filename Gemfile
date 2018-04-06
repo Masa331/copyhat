@@ -6,7 +6,7 @@ gem 'puma', '~> 3.0'
 gem 'sass-rails', github: 'rails/sass-rails'
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.2'
-gem 'elm_sprockets', path: "/home/masa331/pracovni/apps/elm_sprockets"
+gem 'elm_sprockets', path: "/home/masa331/pracovni/code/elm/elm_sprockets"
 
 gem 'jquery-rails'
 gem 'jbuilder', '~> 2.5'

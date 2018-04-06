@@ -12,6 +12,6 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require FormCreator
+//= require FormDesigner
 //= require_tree .
 //= require app

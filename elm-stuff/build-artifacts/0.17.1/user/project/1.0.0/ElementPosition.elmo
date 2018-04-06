@@ -1,0 +1,61 @@
+var _user$project$ElementPosition$getPosition = _elm_lang$core$Native_Platform.outgoingPort(
+	'getPosition',
+	function (v) {
+		return v;
+	});
+var _user$project$ElementPosition$determinedPositions = _elm_lang$core$Native_Platform.incomingPort(
+	'determinedPositions',
+	_elm_lang$core$Json_Decode$oneOf(
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$core$Json_Decode$null(_elm_lang$core$Maybe$Nothing),
+				A2(
+				_elm_lang$core$Json_Decode$map,
+				_elm_lang$core$Maybe$Just,
+				A2(
+					_elm_lang$core$Json_Decode$andThen,
+					A2(_elm_lang$core$Json_Decode_ops[':='], 'x', _elm_lang$core$Json_Decode$int),
+					function (x) {
+						return A2(
+							_elm_lang$core$Json_Decode$andThen,
+							A2(_elm_lang$core$Json_Decode_ops[':='], 'y', _elm_lang$core$Json_Decode$int),
+							function (y) {
+								return A2(
+									_elm_lang$core$Json_Decode$andThen,
+									A2(_elm_lang$core$Json_Decode_ops[':='], 'width', _elm_lang$core$Json_Decode$int),
+									function (width) {
+										return A2(
+											_elm_lang$core$Json_Decode$andThen,
+											A2(_elm_lang$core$Json_Decode_ops[':='], 'height', _elm_lang$core$Json_Decode$int),
+											function (height) {
+												return A2(
+													_elm_lang$core$Json_Decode$andThen,
+													A2(_elm_lang$core$Json_Decode_ops[':='], 'top', _elm_lang$core$Json_Decode$int),
+													function (top) {
+														return A2(
+															_elm_lang$core$Json_Decode$andThen,
+															A2(_elm_lang$core$Json_Decode_ops[':='], 'right', _elm_lang$core$Json_Decode$int),
+															function (right) {
+																return A2(
+																	_elm_lang$core$Json_Decode$andThen,
+																	A2(_elm_lang$core$Json_Decode_ops[':='], 'bottom', _elm_lang$core$Json_Decode$int),
+																	function (bottom) {
+																		return A2(
+																			_elm_lang$core$Json_Decode$andThen,
+																			A2(_elm_lang$core$Json_Decode_ops[':='], 'left', _elm_lang$core$Json_Decode$int),
+																			function (left) {
+																				return _elm_lang$core$Json_Decode$succeed(
+																					{x: x, y: y, width: width, height: height, top: top, right: right, bottom: bottom, left: left});
+																			});
+																	});
+															});
+													});
+											});
+									});
+							});
+					}))
+			])));
+var _user$project$ElementPosition$Position = F8(
+	function (a, b, c, d, e, f, g, h) {
+		return {x: a, y: b, width: c, height: d, top: e, right: f, bottom: g, left: h};
+	});

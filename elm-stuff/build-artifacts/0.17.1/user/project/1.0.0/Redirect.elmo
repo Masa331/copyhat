@@ -1,0 +1,5 @@
+var _user$project$Redirect$redirect = _elm_lang$core$Native_Platform.outgoingPort(
+	'redirect',
+	function (v) {
+		return v;
+	});

@@ -5,7 +5,9 @@
     "license": "BSD3",
     "source-directories": [
         "app/assets/javascripts",
-        "app/assets/elms"
+        "app/assets/elms",
+        "app/assets/elms/inputs",
+        "app/assets/elms/form"
     ],
     "exposed-modules": [],
     "dependencies": {

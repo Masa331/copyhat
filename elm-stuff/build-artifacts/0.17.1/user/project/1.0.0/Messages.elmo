@@ -1,6 +1,7 @@
 var _user$project$Messages$ElementPosition = function (a) {
 	return {x: a};
 };
+var _user$project$Messages$NoOp = {ctor: 'NoOp'};
 var _user$project$Messages$PositionReturned = function (a) {
 	return {ctor: 'PositionReturned', _0: a};
 };
@@ -19,4 +20,10 @@ var _user$project$Messages$FormFailed = function (a) {
 var _user$project$Messages$FormSaved = function (a) {
 	return {ctor: 'FormSaved', _0: a};
 };
-var _user$project$Messages$FormSubmit = {ctor: 'FormSubmit'};
+var _user$project$Messages$CreateForm = {ctor: 'CreateForm'};
+var _user$project$Messages$InputMsg = function (a) {
+	return {ctor: 'InputMsg', _0: a};
+};
+var _user$project$Messages$FormMsg = function (a) {
+	return {ctor: 'FormMsg', _0: a};
+};

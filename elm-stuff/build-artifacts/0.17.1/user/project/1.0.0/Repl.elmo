@@ -1,0 +1,16 @@
+var _user$project$Repl$t_s_o_l = {ctor: '_Tuple0'};
+var _user$project$Repl$FormFailed = function (a) {
+	return {ctor: 'FormFailed', _0: a};
+};
+var _user$project$Repl$CreateForm = {ctor: 'CreateForm'};
+var _user$project$Repl$DragStop = {ctor: 'DragStop'};
+var _user$project$Repl$DragStart = function (a) {
+	return {ctor: 'DragStart', _0: a};
+};
+var _user$project$Repl$InputMsg = function (a) {
+	return {ctor: 'InputMsg', _0: a};
+};
+var _user$project$Repl$FormMsg = function (a) {
+	return {ctor: 'FormMsg', _0: a};
+};
+var _user$project$Repl$d_e_l_t_r_o_n_3_0_3_0 = _user$project$Repl$FormMsg;
